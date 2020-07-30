@@ -13,6 +13,8 @@ import { SQLite } from '@ionic-native/sqlite/ngx';
  
 import { HttpClientModule } from '@angular/common/http';
 import { BluetoothLE } from '@ionic-native/bluetooth-le/ngx';
+import { QRScanner } from '@ionic-native/qr-scanner/ngx';
+import { Dialogs } from '@ionic-native/dialogs/ngx';
 @NgModule({
   declarations: [AppComponent],
   entryComponents: [],
@@ -23,7 +25,9 @@ import { BluetoothLE } from '@ionic-native/bluetooth-le/ngx';
     { provide: RouteReuseStrategy, useClass: IonicRouteStrategy },
     SQLite,
     SQLitePorter,
-    BluetoothLE
+    BluetoothLE,
+    QRScanner,
+    Dialogs
   ],
   bootstrap: [AppComponent]
 })
