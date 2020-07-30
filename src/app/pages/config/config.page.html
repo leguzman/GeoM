@@ -1,0 +1,76 @@
+
+
+<ion-content fullscreen>
+  
+<ion-list>
+  <ion-item>
+    <ion-label>Fecha</ion-label>
+    <ion-datetime id="date_input_config" [(ngModel)]="date" display-format="DD/MM/YYYY" picker-format="DD MM YYYY" ></ion-datetime>
+  </ion-item>
+
+  <ion-item lines="full">
+    <ion-label position="stacked">
+      Huerto
+    </ion-label>
+    <ion-select placeholder="Seleccione Huerto">
+      <ion-select-option *ngFor="let item of huertos">{{item}}</ion-select-option>
+    </ion-select>
+  </ion-item>
+
+  <ion-item lines="full">
+    <ion-label position="stacked">
+      Cuartel
+    </ion-label>
+    <ion-select placeholder="Seleccionar...">
+      <ion-select-option  *ngFor="let cuartel of cuarteles">{{cuartel}}</ion-select-option>
+    </ion-select>
+  </ion-item>
+
+  <ion-item lines="full">
+    <ion-label position="stacked">
+      Especie
+    </ion-label>
+    <ion-select placeholder="Seleccionar..." multiple={true}>
+      <ion-select-option value="Fresa">Fresa</ion-select-option>
+      <ion-select-option value="Manzana">Manzana</ion-select-option>
+      <ion-select-option value="Uva">Uva</ion-select-option>
+      <ion-select-option value="Naranja">Naranja</ion-select-option>
+    </ion-select>
+  </ion-item>
+
+  <ion-item lines="full">
+    <ion-label position="stacked">
+      Variedad
+    </ion-label>
+    <ion-select placeholder="Seleccionar..." multiple={true}>
+      <ion-select-option  *ngFor="let variedad of variedades" >{{variedad}}</ion-select-option>
+    </ion-select>
+  </ion-item>
+
+  <ion-item lines="full">
+    <ion-label position="stacked">
+      Envase
+    </ion-label>
+    <ion-select multiple placeholder="Seleccionar..." >
+      <ion-select-option *ngFor="let envase of envases">{{envase}}</ion-select-option>
+    </ion-select>
+  </ion-item>
+
+  
+  <ion-item lines="full">
+    <ion-label position="stacked">
+      Envase Contenedor
+    </ion-label>
+    <ion-select multiple placeholder="Seleccionar..." >
+      <ion-select-option *ngFor="let envase of envases">{{envase}}</ion-select-option>
+    </ion-select>
+  </ion-item>
+
+
+  <ion-item id="cuadrilla" (click)="alertCuadrilla()" >
+    <ion-label>Cuadrilla</ion-label>
+    <ion-label id="cuadrilla_v">{{Cuadrilla}}</ion-label>
+  </ion-item>
+
+</ion-list>
+</ion-content>
