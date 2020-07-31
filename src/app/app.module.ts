@@ -13,8 +13,7 @@ import { SQLite } from '@ionic-native/sqlite/ngx';
  
 import { HttpClientModule } from '@angular/common/http';
 import { BluetoothLE } from '@ionic-native/bluetooth-le/ngx';
-import { QRScanner } from '@ionic-native/qr-scanner/ngx';
-import { Dialogs } from '@ionic-native/dialogs/ngx';
+import { BarcodeScanner } from "@ionic-native/barcode-scanner/ngx";
 @NgModule({
   declarations: [AppComponent],
   entryComponents: [],
@@ -26,8 +25,7 @@ import { Dialogs } from '@ionic-native/dialogs/ngx';
     SQLite,
     SQLitePorter,
     BluetoothLE,
-    QRScanner,
-    Dialogs
+    BarcodeScanner
   ],
   bootstrap: [AppComponent]
 })
