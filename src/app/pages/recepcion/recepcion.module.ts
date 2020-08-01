@@ -7,7 +7,6 @@ import { IonicModule } from '@ionic/angular';
 import { RecepcionPageRoutingModule } from './recepcion-routing.module';
 
 import { RecepcionPage } from './recepcion.page';
-import { NgxQRCodeModule } from 'ngx-qrcode2';
 
 @NgModule({
   imports: [

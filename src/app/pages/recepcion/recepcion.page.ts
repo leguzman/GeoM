@@ -1,36 +1,167 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, ViewChild, ElementRef } from '@angular/core';
 import { ConfigPageModule } from '../config/config.module';
-import { BarcodeScanner } from '@ionic-native/barcode-scanner/ngx';
-import { ToastController } from '@ionic/angular';
+import {  Platform, ToastController, LoadingController } from '@ionic/angular';
+import jsQR from "jsqr";
 
 @Component({
   selector: 'app-recepcion',
   templateUrl: './recepcion.page.html',
   styleUrls: ['./recepcion.page.scss'],
 })
-export class RecepcionPage implements OnInit {
-
-  constructor(private BarcodeScanner:BarcodeScanner, private toatCtrl: ToastController) { }
-  date:Date = new Date();
-  QR: string = "nada";
-  scannedCode:any;
-  elementType: 'url' |'canvas' |'img' = 'canvas'
-  ngOnInit() {
-    setTimeout(() => {
-      document.getElementById('date_input_recepcion').click()
-    }, 300);
+export class RecepcionPage  {
+  date = new Date();
+  scanned_products: string[];
+  @ViewChild('video', { static: false }) video: ElementRef;
+  @ViewChild('canvas', { static: false }) canvas: ElementRef;
+  @ViewChild('fileinput', { static: false }) fileinput: ElementRef;
+  canvasElement: any;
+  videoElement: any;
+  canvasContext: any;
+  scanActive = false;
+  scanResult = null;
+  scanArray:string[]=[];
+  loading: HTMLIonLoadingElement = null;
+  constructor(
+    private toastCtrl: ToastController,
+    private loadingCtrl: LoadingController,
+    private plt: Platform
+  ) {
+    const isInStandaloneMode = () =>
+      'standalone' in window.navigator && window.navigator['standalone'];
+    if (this.plt.is('ios') && isInStandaloneMode()) {
+      console.log('I am a an iOS PWA!');
+      alert('ios')
+      // E.g. hide the scan functionality!
+    }
   }
-  
-  ScanCode(){
-    this.BarcodeScanner.scan().then(
-      data=>{
-        this.scannedCode= data;
-        alert(data);
+ 
+  ngAfterViewInit() {
+    this.canvasElement = this.canvas.nativeElement;
+    this.canvasContext = this.canvasElement.getContext('2d');
+    this.videoElement = this.video.nativeElement;
+  }
+ 
+  // Helper functions
+  async showQrToast() {
+    const toast = await this.toastCtrl.create({
+      message: `Correcto: ${this.scanResult}`,
+      position: 'top',
+      /*buttons: [
+        {
+          text: 'Open',
+          handler: () => {
+            toast.dismiss();
+          }
+        }
+      ]*/
+    });
+    toast.present();
+    setTimeout(()=>{toast.dismiss()},2000);
+  }
+ 
+  reset() {
+    this.scanResult = null;
+    this.scanArray = [];   //reset qrs
+  }
+ 
+  stopScan() {
+    this.scanActive = false;
+    this.videoElement.srcObject.getTracks().forEach(
+    (track)=>{
+    track.stop();
+    }); 
+  }
+  async startScan() {
+    // Not working on iOS standalone mode!
+    const stream = await navigator.mediaDevices.getUserMedia({
+      video: { facingMode: 'environment' }
+    });
+   
+    this.videoElement.srcObject = stream;
+    // Required for Safari
+    this.videoElement.setAttribute('playsinline', true);
+   
+    this.loading = await this.loadingCtrl.create({});
+    await this.loading.present();
+   
+    this.videoElement.play();
+    requestAnimationFrame(this.scan.bind(this));
+  }
+   
+  async scan() {
+    if (this.videoElement.readyState === this.videoElement.HAVE_ENOUGH_DATA) {//si la camara esta lista, continuar
+      if (this.loading) {
+        await this.loading.dismiss();
+        this.loading = null;
+        this.scanActive = true;
       }
-    )
-  }  
-  scan(){
-    
-  }   
+   
+      this.canvasElement.height = this.videoElement.videoHeight;
+      this.canvasElement.width = this.videoElement.videoWidth;
+   
+      this.canvasContext.drawImage(
+        this.videoElement,
+        0,
+        0,
+        this.canvasElement.width,
+        this.canvasElement.height
+      );
+      const imageData = this.canvasContext.getImageData(
+        0,
+        0,
+        this.canvasElement.width,
+        this.canvasElement.height
+      );
+      var code = jsQR(imageData.data, imageData.width, imageData.height, {
+        inversionAttempts: 'dontInvert'
+      });
 
+      
+        if (code) {
+          this.scanActive = false;        //close the scan
+          this.scanResult = code.data;
+          this.scanArray.push(this.scanResult);
+          this.showQrToast();
+          
+        } else {
+          if (this.scanActive) {
+            requestAnimationFrame(this.scan.bind(this));
+          }
+        }
+      
+
+      
+    } else {
+      requestAnimationFrame(this.scan.bind(this));
+    }
+  }
+  //iOS Fallback
+  captureImage() {
+    this.fileinput.nativeElement.click();
+  }
+   
+  handleFile(files: FileList) {
+    const file = files.item(0);
+   
+    var img = new Image();
+    img.onload = () => {
+      this.canvasContext.drawImage(img, 0, 0, this.canvasElement.width, this.canvasElement.height);
+      const imageData = this.canvasContext.getImageData(
+        0,
+        0,
+        this.canvasElement.width,
+        this.canvasElement.height
+      );
+      const code = jsQR(imageData.data, imageData.width, imageData.height, {
+        inversionAttempts: 'dontInvert'
+      });
+   
+      if (code) {
+        this.scanResult = code.data;
+        this.showQrToast();
+      }
+    };
+    img.src = URL.createObjectURL(file);
+  }
+ 
 }
