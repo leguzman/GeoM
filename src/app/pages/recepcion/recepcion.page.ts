@@ -112,16 +112,19 @@ export class RecepcionPage  {
         this.canvasElement.width,
         this.canvasElement.height
       );
+
+      
       var code = jsQR(imageData.data, imageData.width, imageData.height, {
         inversionAttempts: 'dontInvert'
       });
 
       
         if (code) {
-          this.scanActive = false;        //close the scan
+          //this.scanActive = false;        //close the scan
           this.scanResult = code.data;
           this.scanArray.push(this.scanResult);
           this.showQrToast();
+          setTimeout(()=>{this.scan()},3000)
           
         } else {
           if (this.scanActive) {
@@ -130,7 +133,7 @@ export class RecepcionPage  {
         }
       
 
-      
+    
     } else {
       requestAnimationFrame(this.scan.bind(this));
     }
