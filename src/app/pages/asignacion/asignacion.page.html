@@ -1,0 +1,15 @@
+<ion-content>
+  <ion-list> 
+    <ion-item *ngIf="!online">
+      <ion-input class='boton' placeholder='RUN'>
+      </ion-input>
+    </ion-item>
+    <ion-item>
+      <ion-button (click)='scan()'>
+        SCAN CODE
+        <ion-icon name="qr-code-outline"></ion-icon>
+      </ion-button>
+    </ion-item>
+  </ion-list>
+  {{scannedCodes.toString()}}
+</ion-content>

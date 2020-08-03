@@ -31,6 +31,11 @@ const routes: Routes = [
       
       },
       {
+        path: 'asignacion',
+        loadChildren: () => import('../asignacion/asignacion.module').then(m => m.AsignacionPageModule)
+      
+      },
+      {
         path: 'mas',
         loadChildren: () => import('../mas/mas.module').then(m => m.MasPageModule)
       
