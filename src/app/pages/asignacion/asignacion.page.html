@@ -1,13 +1,20 @@
 <ion-content>
   <ion-list> 
     <ion-item *ngIf="!online">
-      <ion-input class='boton' placeholder='RUN'>
+      <ion-input  [(ngModel)]="run"  class='boton' placeholder='RUT' [brmasker]="{mask:'00.000.000-00', len:12}">
       </ion-input>
     </ion-item>
-    <ion-item>
-      <ion-button (click)='scan()'>
-        SCAN CODE
+    <!--ion-item>
+      <ion-button (click)='scan()' >
+        SCAN COD12
         <ion-icon name="qr-code-outline"></ion-icon>
+      </ion-button>
+    </ion-item-->
+    <ion-item>
+      <ion-input  placeholder='CARNET' [(ngModel)]="data">
+      </ion-input>
+      <ion-button  (click)="scans()">
+        ADD
       </ion-button>
     </ion-item>
   </ion-list>

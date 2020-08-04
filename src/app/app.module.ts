@@ -14,6 +14,9 @@ import { SQLite } from '@ionic-native/sqlite/ngx';
 import { HttpClientModule } from '@angular/common/http';
 import { BluetoothLE } from '@ionic-native/bluetooth-le/ngx';
 import { BarcodeScanner } from "@ionic-native/barcode-scanner/ngx";
+
+
+
 @NgModule({
   declarations: [AppComponent],
   entryComponents: [],

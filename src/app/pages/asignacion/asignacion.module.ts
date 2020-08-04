@@ -8,13 +8,21 @@ import { AsignacionPageRoutingModule } from './asignacion-routing.module';
 
 import { AsignacionPage } from './asignacion.page';
 
+import { BrMaskerModule, BrMaskDirective } from 'br-mask';
+
 @NgModule({
   imports: [
     CommonModule,
     FormsModule,
     IonicModule,
-    AsignacionPageRoutingModule
+    AsignacionPageRoutingModule,
+    BrMaskerModule
   ],
+  providers: [
+    BrMaskDirective
+    
+    ],
   declarations: [AsignacionPage]
+  
 })
 export class AsignacionPageModule {}
