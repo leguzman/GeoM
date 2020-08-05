@@ -2,6 +2,7 @@ import { Component, OnInit, ViewChild } from '@angular/core';
 
 import { AlertController } from '@ionic/angular';
 import {NavController} from '@ionic/angular';
+import { FormGroup, FormBuilder, Validators } from '@angular/forms';
 
 @Component({
   selector: 'app-config',
@@ -11,7 +12,7 @@ import {NavController} from '@ionic/angular';
 export class ConfigPage implements OnInit {
 
 
-  constructor(public alertController: AlertController, private navCtrl: NavController){}
+  constructor(public alertController: AlertController, private navCtrl: NavController,private _formBuilder: FormBuilder){}
 
 
   variedades = ['Salvaje', 'Del valle', 'Tropical'];
@@ -27,7 +28,24 @@ export class ConfigPage implements OnInit {
   Cuadrilla = 0;
   Envase: string;
   Run = 0;
+  isLinear = false;
+  firstFormGroup: FormGroup;
+  secondFormGroup: FormGroup;
+  equipoFormGroup:  FormGroup;
   ngOnInit() {
+    this.firstFormGroup = this._formBuilder.group({
+      huerto: ['', Validators.required],
+      cuartel: ['', Validators.required]
+    });
+    this.secondFormGroup = this._formBuilder.group({
+      especie: ['', Validators.required],
+      variedad: ['', Validators.required]
+    });  
+    this.equipoFormGroup = this._formBuilder.group({
+      run: ['', Validators.required],
+      cuadrilla: ['', Validators.required],
+      personas:[',',Validators.required]
+    });  
     setTimeout(() => {
       document.getElementById('date_input_config').click()
     }, 300);
@@ -107,7 +125,6 @@ export class ConfigPage implements OnInit {
       return;
     });;
   }
-
 
 
 }
