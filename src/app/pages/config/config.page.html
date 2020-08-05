@@ -1,5 +1,12 @@
 
-
+<ion-header [translucent]="true">
+  <ion-toolbar>
+    <ion-title>Configuración</ion-title>
+    <ion-buttons slot="start">
+      <ion-menu-button></ion-menu-button>
+    </ion-buttons>
+  </ion-toolbar>
+</ion-header>
 <ion-content fullscreen>
   
 <ion-list>
@@ -49,7 +56,7 @@
 
   <ion-item lines="full">
     <ion-label position="stacked">
-      Envase
+      Envase de Cosecha
     </ion-label>
     <ion-select multiple placeholder="Seleccionar..." >
       <ion-select-option *ngFor="let envase of envases">{{envase}}</ion-select-option>
@@ -67,10 +74,17 @@
   </ion-item>
 
 
+  
+
+  <ion-item id="credenciales" (click)="alertCuadrilla()" >
+    <ion-label>Asignación de Credenciales</ion-label>
+  </ion-item>
+
   <ion-item id="cuadrilla" (click)="alertCuadrilla()" >
-    <ion-label>Cuadrilla</ion-label>
+    <ion-label>Configurar Cuadrilla</ion-label>
     <ion-label id="cuadrilla_v">{{Cuadrilla}}</ion-label>
   </ion-item>
+
 
 </ion-list>
 </ion-content>
