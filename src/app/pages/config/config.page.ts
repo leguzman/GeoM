@@ -3,6 +3,7 @@ import { Component, OnInit, ViewChild } from '@angular/core';
 import { AlertController } from '@ionic/angular';
 import {NavController} from '@ionic/angular';
 import { FormGroup, FormBuilder, Validators } from '@angular/forms';
+import { BarcodeScanner } from '@ionic-native/barcode-scanner/ngx';
 
 @Component({
   selector: 'app-config',
@@ -12,7 +13,10 @@ import { FormGroup, FormBuilder, Validators } from '@angular/forms';
 export class ConfigPage implements OnInit {
 
 
-  constructor(public alertController: AlertController, private navCtrl: NavController,private _formBuilder: FormBuilder){}
+  constructor(public alertController: AlertController, 
+    private navCtrl: NavController,
+    private _formBuilder: FormBuilder,
+    private barcodeScanner: BarcodeScanner){}
 
 
   variedades = ['Salvaje', 'Del valle', 'Tropical'];
@@ -27,6 +31,7 @@ export class ConfigPage implements OnInit {
   Variedad: string;
   Cuadrilla = 0;
   Envase: string;
+  scannedCodes = [];
   Run = 0;
   isLinear = false;
   firstFormGroup: FormGroup;
@@ -126,5 +131,12 @@ export class ConfigPage implements OnInit {
     });;
   }
 
-
+  scan() {
+      const self = this;
+      this.barcodeScanner.scan().then(
+        data => {
+          self.scannedCodes.push(data.text + '/' );
+        }
+      )
+  }
 }
